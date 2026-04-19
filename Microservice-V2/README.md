@@ -13,6 +13,7 @@ Service module directories in this repo are:
 ## Included services
 
 - MySQL
+- phpMyAdmin
 - Redis
 - RedisInsight
 - Zookeeper
@@ -81,9 +82,15 @@ Notes:
 - Order Service: `http://localhost:8098`
 - Kafka UI: `http://localhost:8080`
 - RedisInsight: `http://localhost:8001`
+- phpMyAdmin: `http://localhost:8081`
 - MySQL: `localhost:3306`
 - Redis: `localhost:6379`
 - Kafka host listener: `localhost:29092`
+
+Redis lock browser visibility:
+
+- `REDIS_LOCK_DEBUG_HOLD_MS=5000` is enabled in `.env` by default so the Product Service keeps the Redis lock for 5 seconds before unlocking.
+- Set `REDIS_LOCK_DEBUG_HOLD_MS=0` and rebuild `product-service` when you want the original faster behavior back.
 
 ## Profiles
 
@@ -243,6 +250,15 @@ Because the key is short-lived, the most reliable verification is the original d
 2. Trigger order creation.
 3. Inspect RedisInsight at `http://localhost:8001` with `lock:*` or `lock:products:*`.
 4. Resume execution and confirm the key disappears after processing.
+
+For Browser-based inspection without a breakpoint, this repo now supports a configurable hold:
+
+```bash
+docker compose up -d --build product-service
+```
+
+- While `REDIS_LOCK_DEBUG_HOLD_MS=5000`, create an order and refresh RedisInsight Browser with `lock:*`.
+- To disable the extra wait, set `REDIS_LOCK_DEBUG_HOLD_MS=0` in `.env` and rebuild `product-service`.
 
 ## Local Maven runs
 

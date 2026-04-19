@@ -42,6 +42,9 @@ public class ProductService implements IProductService {
     @Value("${app.kafka.topics.product-locked:product_locked}")
     private String productLockedTopic;
 
+    @Value("${app.redis.lock.debug-hold-ms:0}")
+    private long redisLockDebugHoldMs;
+
     @Override
     public List<ProductResponse> getAllProduct(ProductFilterForm form) {
         Specification<Product> where = ProductSpecification.buildWhere(form);
@@ -132,6 +135,11 @@ public class ProductService implements IProductService {
 
                 productRepository.saveAll(products);
                 log.info("Updated stock for products {}", productIds);
+
+                if (redisLockDebugHoldMs > 0) {
+                    log.info("Holding Redis lock {} for {} ms to support local browser inspection", lockKey, redisLockDebugHoldMs);
+                    Thread.sleep(redisLockDebugHoldMs);
+                }
             }
 
         } catch (Exception ex) {

@@ -18,6 +18,21 @@ services:
     networks:
       - micro-net
 
+  phpmyadmin:
+    image: phpmyadmin:5-apache
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 0
+    ports:
+      - "${PHPMYADMIN_PORT:-8081}:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - micro-net
+
   redis:
     image: redis:7.2-alpine
     restart: unless-stopped
@@ -167,6 +182,7 @@ services:
       KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
       REDIS_HOST: ${REDIS_HOST}
       REDIS_PORT: ${REDIS_PORT}
+      REDIS_LOCK_DEBUG_HOLD_MS: ${REDIS_LOCK_DEBUG_HOLD_MS}
       EUREKA_DEFAULT_ZONE: ${EUREKA_DEFAULT_ZONE}
     ports:
       - "${PRODUCT_SERVICE_PORT}:8091"
