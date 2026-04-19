@@ -27,16 +27,24 @@ Service module directories in this repo are:
 ## Prerequisites
 
 - Docker Desktop or Docker Engine with Compose support
+- `curl` for manual or scripted verification
 
 ## Start the stack
 
 Run everything from the repository root:
 
 ```bash
-cd /path/to/Microservice-V2
-docker compose config
+cp .env.example .env
+# edit .env if you want different local passwords or port mappings
+
 docker compose up -d --build
 docker compose ps
+```
+
+Optional preflight render:
+
+```bash
+docker compose config
 ```
 
 Useful follow-up commands:
@@ -62,6 +70,7 @@ Notes:
 
 - `mysql-init/init.sql` is mounted into `/docker-entrypoint-initdb.d` by Compose and runs only when the MySQL volume is created fresh.
 - If you need to re-seed MySQL, use `docker compose down -v` before starting again.
+- `.env` is intentionally local-only and is ignored by git. Commit `.env.example` instead when defaults change.
 
 ## Ports
 
@@ -126,6 +135,14 @@ Notes:
 - `SUMMER20` is seeded as valid from `2026-01-01 00:00:00` through `2026-12-31 23:59:59`, which covers the current local-test date of `2026-04-19`.
 
 ## Verification checklist
+
+For a repeatable smoke test, you can run:
+
+```bash
+./scripts/verify.sh
+```
+
+The script assumes the stack is already running. It checks stack endpoints, creates an order with `SUMMER20`, verifies stock changes, verifies `PREPARED` status, checks `usage_limit` decrement, and tries to observe the Redis lock key.
 
 ### 1. Create order
 
