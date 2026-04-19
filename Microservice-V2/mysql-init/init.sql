@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS promotions
 INSERT IGNORE INTO promotions (id, name, code, discount_type, discount_value, min_order_value, start_date, end_date, usage_limit, is_deleted, created_date, created_by, last_modified_date, last_modified_by) VALUES
 (UUID(), 'Giảm 10% cho đơn hàng trên 200k', 'SAVE10', 'PERCENT', 10, 200000, '2026-01-01 00:00:00', '2026-12-31 23:59:59', 1000, 0, NOW(), 'admin', NOW(), 'admin'),
 (UUID(), 'Giảm 50k cho đơn hàng trên 500k', 'V50K', 'AMOUNT', 50000, 500000, '2026-04-01 00:00:00', '2026-05-31 23:59:59', 500, 0, NOW(), 'admin', NOW(), 'admin'),
-(UUID(), 'Giảm 20% toàn bộ đơn hàng', 'SUMMER20', 'PERCENT', 20, 0, '2026-06-01 00:00:00', '2026-08-31 23:59:59', NULL, 0, NOW(), 'admin', NOW(), 'admin'),
+(UUID(), 'Giảm 20% toàn bộ đơn hàng', 'SUMMER20', 'PERCENT', 20, 0, '2026-01-01 00:00:00', '2026-12-31 23:59:59', 100, 0, NOW(), 'admin', NOW(), 'admin'),
 (UUID(), 'Khách mới giảm 15%', 'NEW15', 'PERCENT', 15, 100000, '2026-01-01 00:00:00', '2026-12-31 23:59:59', 200, 0, NOW(), 'admin', NOW(), 'admin'),
 (UUID(), 'Black Friday - Giảm 100k', 'BF100', 'AMOUNT', 100000, 1000000, '2026-11-25 00:00:00', '2026-11-30 23:59:59', 5000, 0, NOW(), 'admin', NOW(), 'admin');
 
